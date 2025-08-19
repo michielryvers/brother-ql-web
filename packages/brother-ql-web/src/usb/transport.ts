@@ -55,9 +55,16 @@ export class UsbTransport {
     this.endpointOut = epOut.endpointNumber;
   }
 
-  async write(data: BufferSource): Promise<void> {
+  async write(data: any): Promise<void> {
     if (!this.isConnected) throw new Error("Not connected");
-    const result = await this.device.transferOut(this.endpointOut, data);
+    // Normalize to a BufferSource acceptable by WebUSB typings
+    const payload =
+      data instanceof Uint8Array || data instanceof DataView
+        ? (data as ArrayBufferView)
+        : data instanceof ArrayBuffer
+        ? data
+        : (data?.buffer as ArrayBuffer) ?? data;
+    const result = await this.device.transferOut(this.endpointOut, payload);
     if (result.status !== "ok") throw new Error(`transferOut failed: ${result.status}`);
   }
 
