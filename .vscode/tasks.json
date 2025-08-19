@@ -5,6 +5,11 @@
 			"label": "Type-check brother-ql-web package",
 			"type": "shell",
 			"command": "pnpm exec tsc -p packages/brother-ql-web/tsconfig.json --noEmit"
+		},
+		{
+			"label": "Type-check brother-ql-web package",
+			"type": "shell",
+			"command": "pnpm exec tsc -p packages/brother-ql-web/tsconfig.json --noEmit"
 		}
 	]
 }
