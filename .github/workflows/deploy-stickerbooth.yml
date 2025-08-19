@@ -30,13 +30,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
 
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Prepare pnpm
-        run: corepack prepare pnpm@10.14.0 --activate
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: '10.14.0'
+          run_install: false
 
       - name: Show pnpm version
         run: pnpm --version
@@ -52,6 +51,9 @@ jobs:
           DEPLOY_USE_DIST: '1'
           VITE_BASE: '/brother-ql-web/'
         run: pnpm --filter stickerbooth build
+
+      - name: Add .nojekyll file
+        run: touch apps/stickerbooth/dist/.nojekyll
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
