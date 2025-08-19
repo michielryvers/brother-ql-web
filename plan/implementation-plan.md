@@ -76,9 +76,9 @@ This plan describes how to implement a browser-based library (packages/brother-q
 ## Implementation Steps
 
 1) Foundations & Types
-- [ ] Create `src/core/status.ts`: enums, `PrinterStatus` type, `parseStatus(frame: Uint8Array)` with pin layout tables from .NET reference.
-- [ ] Create `src/core/commands.ts`: constants and helpers (`printInformation(status, lines)`, `rasterData(line)` etc.).
-- [ ] Create `src/usb/transport.ts`: transport class with `connect()`, `bulkIn()`, `bulkOut()`, endpoint discovery.
+- [x] Create `src/core/status.ts`: enums (ported as const objects), `PrinterStatus` type, `parseStatus(frame: Uint8Array)` with pin layout tables from .NET reference.
+- [x] Create `src/core/commands.ts`: constants and helpers (`printInformation(status, lines)`, `rasterData(line)` etc.).
+- [x] Create `src/usb/transport.ts`: transport class with `connect()`, `bulkIn()`, `bulkOut()`, endpoint discovery.
 
 2) Image Pipeline
 - [ ] Create `src/core/image.ts`:
