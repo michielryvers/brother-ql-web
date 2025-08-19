@@ -54,16 +54,34 @@ export async function printDitheredImage(
     const targetW = cachedStatus.printableDots;
     if (src.width !== targetW) {
       const { mono } = await buildMonoAtWidth(src, targetW, opts);
-      lines = packRasterLines(mono, cachedStatus.printableDots, cachedStatus.leftMargin);
+      lines = packRasterLines(
+        mono,
+        cachedStatus.printableDots,
+        cachedStatus.leftMargin,
+        cachedStatus.rightMargin,
+        true
+      );
     } else {
       const ctx = src.getContext("2d");
       if (!ctx) throw new Error("2D context unavailable");
       const img = ctx.getImageData(0, 0, src.width, src.height);
-      lines = packRasterLines(img, cachedStatus.printableDots, cachedStatus.leftMargin);
+      lines = packRasterLines(
+        img,
+        cachedStatus.printableDots,
+        cachedStatus.leftMargin,
+        cachedStatus.rightMargin,
+        true
+      );
     }
   } else {
     const { mono } = await buildMonoAtWidth(src, cachedStatus.printableDots, opts);
-    lines = packRasterLines(mono, cachedStatus.printableDots, cachedStatus.leftMargin);
+    lines = packRasterLines(
+      mono,
+      cachedStatus.printableDots,
+      cachedStatus.leftMargin,
+      cachedStatus.rightMargin,
+      true
+    );
   }
 
   await printLines(lines, opts);
@@ -75,7 +93,13 @@ export async function printColorImage(
 ): Promise<void> {
   if (!cachedStatus) throw new Error("Not connected: call connect() first");
   const { mono } = await buildMonoAtWidth(src, cachedStatus.printableDots, opts);
-  const lines = packRasterLines(mono, cachedStatus.printableDots, cachedStatus.leftMargin);
+  const lines = packRasterLines(
+    mono,
+    cachedStatus.printableDots,
+    cachedStatus.leftMargin,
+    cachedStatus.rightMargin,
+    true
+  );
   await printLines(lines, opts);
 }
 

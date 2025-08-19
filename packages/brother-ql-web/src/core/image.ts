@@ -159,7 +159,9 @@ export async function buildMonoAtWidth(
 export function packRasterLines(
   mono: ImageData,
   printableDots: number,
-  leftMargin: number
+  leftMargin: number,
+  rightMargin?: number,
+  flipMargins = true
 ): Uint8Array[] {
   if (mono.width !== printableDots) {
     throw new Error("Image width does not match printable dots.");
@@ -167,6 +169,11 @@ export function packRasterLines(
   const lines: Uint8Array[] = [];
   const data = mono.data;
   const w = mono.width;
+  const totalBits = 720;
+  const effectiveLeft = flipMargins
+    ? (rightMargin ?? (totalBits - leftMargin - printableDots))
+    : leftMargin;
+
   for (let y = 0; y < mono.height; y++) {
     const line = new Uint8Array(90); // 90 bytes = 720 bits
     const rowOff = y * w * 4;
@@ -175,7 +182,7 @@ export function packRasterLines(
       const srcX = (w - 1) - px; // mirror X
       const v = data[rowOff + srcX * 4]; // grayscale channel
       if (v > 127) continue; // white pixel
-      const bit = leftMargin + px;
+      const bit = effectiveLeft + px;
       const byteIdx = bit >> 3; // /8
       const bitInByte = 7 - (bit & 7); // MSB-first
       line[byteIdx] |= 1 << bitInByte;
