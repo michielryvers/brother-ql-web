@@ -52,6 +52,9 @@ jobs:
           VITE_BASE: '/brother-ql-web/'
         run: pnpm --filter stickerbooth build
 
+      - name: Add .nojekyll file
+        run: touch apps/stickerbooth/dist/.nojekyll
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
