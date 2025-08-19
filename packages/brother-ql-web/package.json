@@ -20,8 +20,6 @@
     "vite-plugin-dts": "^4.5.4"
   },
   "dependencies": {
-    "@thi.ng/pixel": "^7.5.9",
-    "@thi.ng/pixel-dither": "^1.1.177",
     "pica": "^9.0.1"
   }
 }
