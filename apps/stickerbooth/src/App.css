@@ -67,7 +67,7 @@
   width: 84px;
   height: 84px;
   border-radius: 50%;
-  margin: 0 auto 28px;
+  margin: 28px auto;
   font-size: 2rem;
   display: grid;
   place-items: center;
@@ -85,7 +85,7 @@
     /* Make the button larger on mobile for easier tapping */
     width: 96px;
     height: 96px;
-    margin: 0 auto 32px;
+    margin: 32px auto;
     /* Add some padding around the touch area */
     padding: 8px;
   }
