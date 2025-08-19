@@ -1,0 +1,22 @@
+{
+  "name": "@proeftuin/brother-ql-web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "tsup": "^8.5.0",
+    "typescript": "~5.8.3",
+    "vite": "^7.1.2",
+    "vite-plugin-dts": "^4.5.4"
+  },
+  "dependencies": {
+    "@thi.ng/pixel": "^7.5.9",
+    "@thi.ng/pixel-dither": "^1.1.177",
+    "pica": "^9.0.1"
+  }
+}
