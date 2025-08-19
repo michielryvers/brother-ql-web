@@ -25,6 +25,11 @@
 			"label": "Type-check brother-ql-web package",
 			"type": "shell",
 			"command": "pnpm exec tsc -p packages/brother-ql-web/tsconfig.json --noEmit"
+		},
+		{
+			"label": "Run vitest for brother-ql-web",
+			"type": "shell",
+			"command": "pnpm -w --filter @proeftuin/brother-ql-web test"
 		}
 	]
 }
