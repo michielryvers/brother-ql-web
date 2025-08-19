@@ -50,7 +50,7 @@ export async function resizeToWidth(canvas: HTMLCanvasElement, width: number): P
   const scale = width / canvas.width;
   const out = document.createElement("canvas");
   out.width = width;
-  out.height = Math.max(1, Math.round(canvas.height * scale * 2)); // *2 to match reference vertical scaling heuristic
+  out.height = Math.max(1, Math.round(canvas.height * scale));
   await picaInstance.resize(canvas, out);
   return out;
 }

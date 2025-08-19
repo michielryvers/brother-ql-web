@@ -15,7 +15,7 @@ import {
   AutomaticStatusNotification,
   CutEach1,
 } from "./core/commands";
-import { parseStatus, type PrinterStatus, STATUS_TYPE } from "./core/status";
+import { parseStatus, type PrinterStatus, STATUS_TYPE, PHASE_TYPE } from "./core/status";
 import { buildMonoAtWidth, packRasterLines, type ImageSource, type PreviewOptions } from "./core/image";
 import { usbTransport } from "./usb/transport";
 
@@ -131,7 +131,12 @@ async function waitForPrintComplete(timeoutMs = 20000): Promise<void> {
     if (status.statusType === STATUS_TYPE.ErrorOccurred) {
       throw new Error("Printer reported an error during printing");
     }
-    if (status.statusType === STATUS_TYPE.PrintingCompleted) {
+    if (
+      status.statusType === STATUS_TYPE.PrintingCompleted ||
+      (status.statusType === STATUS_TYPE.Reply &&
+        status.phaseType === PHASE_TYPE.WaitingToReceive &&
+        status.phaseNumber === 0)
+    ) {
       return; // done
     }
     // slight delay to avoid hammering USB

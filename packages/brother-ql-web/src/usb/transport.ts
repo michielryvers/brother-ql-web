@@ -81,16 +81,25 @@ export class UsbTransport {
   }
 
   async readStatusFrame(timeoutMs = 5000): Promise<Uint8Array> {
-    // Status frames are 32 bytes. To be defensive, loop until filled.
+    // Status frames are 32 bytes. Loop until filled, tolerating zero-length packets.
     const total = 32;
     const buf = new Uint8Array(total);
     let off = 0;
+    const start = Date.now();
     while (off < total) {
-      const dv = await this.read(total - off, timeoutMs);
+      const elapsed = Date.now() - start;
+      const remainingTimeout = Math.max(1, timeoutMs - elapsed);
+      if (remainingTimeout <= 0) throw new Error("Status read timeout");
+
+      const dv = await this.read(total - off, remainingTimeout);
       const chunk = new Uint8Array(dv.buffer, dv.byteOffset, dv.byteLength);
-      buf.set(chunk, off);
-      off += chunk.length;
-      if (chunk.length === 0) throw new Error("Zero-length read");
+      if (chunk.length > 0) {
+        buf.set(chunk, off);
+        off += chunk.length;
+      } else {
+        // Occasionally USB can return a ZLP (zero-length packet) -> brief backoff and retry
+        await new Promise((r) => setTimeout(r, 20));
+      }
     }
     return buf;
   }
