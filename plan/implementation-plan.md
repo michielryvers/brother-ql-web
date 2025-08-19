@@ -81,13 +81,14 @@ This plan describes how to implement a browser-based library (packages/brother-q
 - [x] Create `src/usb/transport.ts`: transport class with `connect()`, `bulkIn()`, `bulkOut()`, endpoint discovery.
 
 2) Image Pipeline
-- [ ] Create `src/core/image.ts`:
-  - [ ] `loadImage(src: ImageSource)` where `ImageSource` supports `HTMLImageElement | HTMLCanvasElement | ImageBitmap | Blob | string`.
-  - [ ] `ensurePortrait(canvas)` rotate so height >= width.
-  - [ ] `resizeToWidth(canvas, width)` via `pica`.
-  - [ ] `ditherToMono(imageData, method='atkinson', brightness=150, contrast=80)` using `@thi.ng/pixel-dither`.
-  - [ ] `packRasterLines(monoImageData, printableDots, leftMargin): Uint8Array[]` (90 bytes per line).
-  - [ ] `renderPreviewCanvas(monoImageData): HTMLCanvasElement` for previews.
+- [x] Create `src/core/image.ts`:
+  - [x] `loadImage(src: ImageSource)` where `ImageSource` supports `HTMLImageElement | HTMLCanvasElement | ImageBitmap | Blob | string`.
+  - [x] `ensurePortrait(canvas)` rotate so height >= width.
+  - [x] `resizeToWidth(canvas, width)` via `pica`.
+  - [x] `ditherToMono(imageData, method='atkinson', brightness=150, contrast=80)` using a local Atkinson error-diffusion implementation (can be swapped for `@thi.ng/pixel-dither` later if desired).
+  - [x] `packRasterLines(monoImageData, printableDots, leftMargin): Uint8Array[]` (90 bytes per line).
+  - [x] `renderPreviewCanvas(monoImageData): HTMLCanvasElement` for previews.
+  - [x] Extras: `canvasToImageData(canvas)` and `buildMonoAtWidth(src, width, opts)` convenience helpers.
 
 3) Public API & Sequencing
 - [ ] Create `src/index.ts`:
@@ -102,7 +103,7 @@ This plan describes how to implement a browser-based library (packages/brother-q
   - [ ] `printColorImage(src, opts)`
     - Calls preview pipeline then `printLines`.
   - [ ] `printLines(lines)`
-    - Sequence: `Initialize` → read status → check `WaitingToReceive` → `SwitchToRasterMode` → `NoCompression` → `PrintInformation(status, lines.length)` → `AutoCut` → `Set600DpiAndCut` → `SetMarginAmount` if continuous → stream `RasterData(line)` for each line → `PrintWithFeeding` → poll status until `PrintingCompleted`.
+  - Sequence: `Initialize` → read status → check `WaitingToReceive` → `SwitchToRasterMode` → `NoCompression` → `PrintInformation(status, lines.length)` → `AutoCut`/`CutAtEnd` as needed → `SetMarginAmount` if continuous → stream `RasterData(line)` for each line → `PrintWithFeeding` → poll status until `PrintingCompleted`.
 
 4) Error handling & timeouts
 - [ ] Implement read timeouts and retry loops similar to reference `WaitForPrintToFinishAsync`.
