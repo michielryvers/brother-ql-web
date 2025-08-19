@@ -170,8 +170,10 @@ export function packRasterLines(
   for (let y = 0; y < mono.height; y++) {
     const line = new Uint8Array(90); // 90 bytes = 720 bits
     const rowOff = y * w * 4;
+    // Flip horizontally to match printer pin order (device origin is mirrored vs canvas)
     for (let px = 0; px < printableDots; px++) {
-      const v = data[rowOff + px * 4]; // grayscale channel
+      const srcX = (w - 1) - px; // mirror X
+      const v = data[rowOff + srcX * 4]; // grayscale channel
       if (v > 127) continue; // white pixel
       const bit = leftMargin + px;
       const byteIdx = bit >> 3; // /8
