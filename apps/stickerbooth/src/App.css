@@ -31,6 +31,14 @@
   border-radius: 12px;
   border: none;
   cursor: pointer;
+  /* Mobile touch improvements */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
+  user-select: none;
+  /* Prevent text selection on button */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 .sb-bigbtn-primary { background: #2ed573; color: #0b0c10; }
 .sb-bigbtn-danger { background: #ff4757; color: white; }
@@ -63,4 +71,22 @@
   font-size: 2rem;
   display: grid;
   place-items: center;
+  /* Mobile touch improvements */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0.2);
+  /* Ensure it's touchable */
+  position: relative;
+  z-index: 10;
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 768px) {
+  .sb-shutter {
+    /* Make the button larger on mobile for easier tapping */
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 32px;
+    /* Add some padding around the touch area */
+    padding: 8px;
+  }
 }
